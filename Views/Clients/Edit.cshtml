@@ -1,0 +1,96 @@
+﻿@model tuto.Models.Client
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Client</h4>
+<hr />
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-row">
+        @Html.ValidationSummary(true)
+
+        <div class="form-group col-md-6">
+            @Html.LabelFor(model => model.Firstname, new { @class = "control-label" })
+            <div class="input-group">
+                @Html.EditorFor(model => model.Firstname, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Firstname, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-6">
+            @Html.LabelFor(model => model.Lastname, new { @class = "control-label" })
+            <div class="input-group">
+                @Html.EditorFor(model => model.Lastname, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Lastname, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-6">
+            @Html.LabelFor(model => model.Email, new { @class = "control-label" })
+            <div class="input-group">
+                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-6">
+            @Html.LabelFor(model => model.Password, new { @class = "control-label" })
+            <div class="input-group">
+                @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <br>
+        <div class="form-group col-md-12">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </div>
+}
+
+
+
+@*<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Firstname" class="control-label"></label>
+                <input asp-for="Firstname" class="form-control" />
+                <span asp-validation-for="Firstname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Lastname" class="control-label"></label>
+                <input asp-for="Lastname" class="form-control" />
+                <span asp-validation-for="Lastname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>*@
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
