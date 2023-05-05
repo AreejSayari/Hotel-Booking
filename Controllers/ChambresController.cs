@@ -59,9 +59,10 @@ namespace tuto.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,NumeroChambre,Type,Prix")] Chambre chambre)
         {
-            if (ModelState.IsValid)
+            if (chambre != null)
             {
-                _context.Add(chambre);
+                _context.Chambre.Add(chambre);
+                //_context.Add(chambre);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -96,7 +97,7 @@ namespace tuto.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (chambre != null)
             {
                 try
                 {
@@ -160,45 +161,6 @@ namespace tuto.Controllers
         {
           return (_context.Chambre?.Any(e => e.Id == id)).GetValueOrDefault();
         }
-
-        public async Task<IActionResult> ReserverChambre(int idChambre)
-        {
-            Chambre chambre = new Chambre();
-            chambre.Id = 1;
-            chambre.NumeroChambre = 1 ;
-            chambre.Prix = 300;
-            chambre.Type = "familiale";
-            var utilisateur = new Client
-            {
-                Id = 1,
-                Firstname = "Areej",
-                Lastname = "sayari",
-                Email = "areej@gmail",
-                Password = "password",
-            };
-
-
-            // Création de la réservation
-            var reservation = new Reservation
-            {
-                IdChambre= chambre.Id,
-                IdClient=utilisateur.Id,
-                //Chambre = chambre,
-                //Client = utilisateur,
-                DateArrivee = DateTime.UtcNow,
-                DateDepart= DateTime.Now.AddDays(2)
-
-            };
-
-            _context.Reservation.Add(reservation);
-            await _context.SaveChangesAsync();
-
-            //return Ok("Chambre réservée avec succès !");
-            return View(reservation);
-        }
-
-
-
 
     }
 }

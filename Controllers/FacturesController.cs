@@ -164,5 +164,30 @@ namespace tuto.Controllers
         {
           return (_context.Facture?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+
+        // GET: Factures/Create
+        public IActionResult GenerFacture(int IdReservation)
+        {
+            ViewData["IdReservation"] = new SelectList(_context.Reservation, "Id", "Id");
+            return View();
+        }
+
+        // POST: Factures/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> GenerFacture([Bind("Id,Montant,DateFacture,IdReservation")] Facture facture)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(facture);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["IdReservation"] = new SelectList(_context.Reservation, "Id", "Id", facture.IdReservation);
+            return View(facture);
+        }
     }
 }

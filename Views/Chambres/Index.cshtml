@@ -37,8 +37,9 @@
                 @Html.DisplayFor(modelItem => item.Prix)
             </td>
             <td>
-                    <a asp-action="ReserverChambre" asp-route-id="@item.Id">Reserver</a> |
-
+                @*<a asp-action="Reservations/ReserverChambre" asp-route-id="@item.Id">Reserver</a> *@ 
+        <a asp-controller="Reservations" asp-action="ReserverChambre" asp-route-idChambre="@item.Id">Réserver</a>
+                    |
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>

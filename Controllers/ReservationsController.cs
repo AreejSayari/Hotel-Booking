@@ -22,9 +22,9 @@ namespace tuto.Controllers
         // GET: Reservations
         public async Task<IActionResult> Index()
         {
-              return _context.Reservation != null ? 
-                          View(await _context.Reservation.ToListAsync()) :
-                          Problem("Entity set 'tutoContext.Reservation'  is null.");
+            return _context.Reservation != null ?
+                        View(await _context.Reservation.ToListAsync()) :
+                        Problem("Entity set 'tutoContext.Reservation'  is null.");
         }
 
         // GET: Reservations/Details/5
@@ -150,14 +150,66 @@ namespace tuto.Controllers
             {
                 _context.Reservation.Remove(reservation);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ReservationExists(int id)
         {
-          return (_context.Reservation?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Reservation?.Any(e => e.Id == id)).GetValueOrDefault();
+        }
+
+        // GET: Reservations/ReserverChambre/5
+        public async Task<IActionResult> ReserverChambre(int idChambre)
+        {
+
+            if (idChambre == null)
+            {          
+                return NotFound();
+            }
+
+            var chambre = await _context.Chambre.FindAsync(idChambre);
+            if (chambre == null)
+            {
+                return NotFound();
+            }
+
+            var reservation = new Reservation { 
+                Chambre= chambre,
+                IdChambre=chambre.Id
+            };
+            return View(reservation);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ReserverChambre([Bind("Id,DateArrivee,DateDepart,IdClient,IdChambre")] Reservation reservation)
+        {
+            // Création de la réservation
+            var reservation1 = new Reservation
+            {
+                Id = reservation.Id,
+
+                //Chambre= reservation.Chambre,
+                IdChambre = reservation.IdChambre,
+                
+
+                IdClient = reservation.IdClient,
+
+                DateArrivee = reservation.DateArrivee,
+                DateDepart = reservation.DateDepart
+
+                //DateArrivee = DateTime.UtcNow,
+                //DateDepart= DateTime.Now.AddDays(3)
+
+            };
+            _context.Add(reservation1);
+            await _context.SaveChangesAsync();
+            
+
+            //return Ok("Chambre réservée avec succès !");
+            //return View(reservation);
+            return RedirectToAction("Index");
         }
     }
 }
