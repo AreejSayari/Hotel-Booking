@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using tuto.Data;
 
@@ -11,9 +12,10 @@ using tuto.Data;
 namespace tuto.Migrations
 {
     [DbContext(typeof(tutoContext))]
-    partial class tutoContextModelSnapshot : ModelSnapshot
+    [Migration("20230506162405_InitialCreateB")]
+    partial class InitialCreateB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,8 +64,8 @@ namespace tuto.Migrations
                     b.Property<int>("NumeroChambre")
                         .HasColumnType("int");
 
-                    b.Property<float>("Prix")
-                        .HasColumnType("real");
+                    b.Property<double>("Prix")
+                        .HasColumnType("float");
 
                     b.Property<string>("Type")
                         .IsRequired()
@@ -114,7 +116,7 @@ namespace tuto.Migrations
                     b.Property<DateTime>("DateFacture")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IdClient")
+                    b.Property<int>("IdReservation")
                         .HasColumnType("int");
 
                     b.Property<float>("Montant")
@@ -122,7 +124,7 @@ namespace tuto.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdClient")
+                    b.HasIndex("IdReservation")
                         .IsUnique();
 
                     b.ToTable("Facture");
@@ -148,9 +150,6 @@ namespace tuto.Migrations
                     b.Property<int>("IdClient")
                         .HasColumnType("int");
 
-                    b.Property<int>("NbrChambres")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("IdChambre");
@@ -162,13 +161,13 @@ namespace tuto.Migrations
 
             modelBuilder.Entity("tuto.Models.Facture", b =>
                 {
-                    b.HasOne("tuto.Models.Client", "Client")
+                    b.HasOne("tuto.Models.Reservation", "Reservation")
                         .WithOne("Facture")
-                        .HasForeignKey("tuto.Models.Facture", "IdClient")
+                        .HasForeignKey("tuto.Models.Facture", "IdReservation")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Client");
+                    b.Navigation("Reservation");
                 });
 
             modelBuilder.Entity("tuto.Models.Reservation", b =>
@@ -197,9 +196,12 @@ namespace tuto.Migrations
 
             modelBuilder.Entity("tuto.Models.Client", b =>
                 {
-                    b.Navigation("Facture");
-
                     b.Navigation("Reservations");
+                });
+
+            modelBuilder.Entity("tuto.Models.Reservation", b =>
+                {
+                    b.Navigation("Facture");
                 });
 #pragma warning restore 612, 618
         }

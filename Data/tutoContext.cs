@@ -44,5 +44,7 @@ namespace tuto.Data
                 .WithMany(c => c.Reservations)
                 .HasForeignKey(r => r.IdClient);
         }
+
+        public DbSet<tuto.Models.Admin>? Admin { get; set; }
     }
 }
