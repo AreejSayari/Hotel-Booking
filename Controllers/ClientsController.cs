@@ -58,18 +58,7 @@ namespace tuto.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Firstname,Lastname,Email,Password")] Client client)
         {
-            //if (modelstate.isvalid)            {
-
-            //    _context.add(client);
-            //    await _context.savechangesasync();
-            //    return redirecttoaction(nameof(index));
-            //}
-            //return view(client);
-
-            //client.Firstname = "areej";
-            //client.Lastname = "sayari";
-            //client.Email = "aaa@gmail.com";
-            //client.Password = "password";
+            
             if (client != null)
             {
                 _context.Client.Add(client);
@@ -81,14 +70,25 @@ namespace tuto.Controllers
         }
 
         // GET: Clients/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Client == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Edit(int? id)
+        //{
+        //    if (id == null || _context.Client == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var client = await _context.Client.FindAsync(id);
+        //    var client = await _context.Client.FindAsync(id);
+        //    if (client == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(client);
+        //}
+
+        // GET: Clients/Edit/5
+        public async Task<IActionResult> Edit()
+        {
+            var client = await _context.Client.FindAsync(2); //id du client (session)
             if (client == null)
             {
                 return NotFound();
@@ -131,7 +131,7 @@ namespace tuto.Controllers
             }
             return View(client);
         }
-
+       
         // GET: Clients/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -173,5 +173,49 @@ namespace tuto.Controllers
         {
           return (_context.Client?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+
+        /********************************************************************************/
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        //async Task<IActionResult> Login([Bind("Id,Firstname,Lastname,Email,Password")] Client client)
+        async Task<IActionResult> Login(string email, string password)
+        {
+            /*if (client != null)
+            {
+                var user = await  _context.Client.FirstOrDefaultAsync(e => e.Email == client.Email && e.Password == client.Password);
+                 return RedirectToAction("Index");
+
+            }
+            return View(client);*/
+            var user = await _context.Client.FirstOrDefaultAsync(e => e.Email == email && e.Password == password);
+            return RedirectToAction(nameof(Index));
+
+
+
+            /*var Email = model.Email;
+            var Password = model.Password;
+            var user = _context.Client.FirstOrDefault(u => u.Email == Email && u.Password == Password);
+            if (user != null)
+            {
+                return _context.Client != null ?
+                       View(await _context.Client.ToListAsync()) :
+                       Problem("Entity set 'tutoContext.Client'  is null.");
+                //return RedirectToAction("Index");
+            }
+            //return View(user);
+            return _context.Client != null ?
+                       View(await _context.Client.ToListAsync()) :
+                       Problem("Entity set 'tutoContext.Client'  is null.");*/
+
+        }
     }
+
+
+
 }

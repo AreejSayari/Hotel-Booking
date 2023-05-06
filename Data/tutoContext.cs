@@ -23,11 +23,16 @@ namespace tuto.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Reservation>()
+            //modelBuilder.Entity<Reservation>()
+            //    .HasOne(r => r.Facture)
+            //    .WithOne(f => f.Reservation)
+            //    .HasForeignKey<Facture>(f => f.IdReservation);
+
+            modelBuilder.Entity<Client>()
                 .HasOne(r => r.Facture)
-                .WithOne(f => f.Reservation)
-                .HasForeignKey<Facture>(f => f.IdReservation);
-       
+                .WithOne(f => f.Client)
+                .HasForeignKey<Facture>(f => f.IdClient);
+
 
             modelBuilder.Entity<Reservation>()
                 .HasOne(r => r.Chambre)

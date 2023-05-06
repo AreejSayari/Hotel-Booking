@@ -27,6 +27,78 @@ namespace tuto.Controllers
                         Problem("Entity set 'tutoContext.Reservation'  is null.");
         }
 
+        // GET: 
+        public async Task<IActionResult> VerifierDispo(int idChambre)
+        {
+
+            if (idChambre == null)
+            {
+                return NotFound();
+            }
+
+            var chambre = await _context.Chambre.FirstOrDefaultAsync(m => m.Id == idChambre);
+            if (chambre == null)
+            {
+                return NotFound();
+            }
+
+            List<Reservation> reservationsChambre = _context.Reservation.Where(r => r.IdChambre == idChambre).ToList();            
+            return View(reservationsChambre);       
+
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> VerifierDispo(int idChambre, DateTime dateArrivee, DateTime dateDepart)
+        {
+            List<Reservation> reservationsChambre = _context.Reservation.Where(r => r.IdChambre == idChambre).ToList();
+            ViewBag.Message = "Vous pouvez reserver dans cette date";
+            foreach (Reservation reservation in reservationsChambre)
+            {
+                if( dateArrivee.CompareTo(reservation.DateArrivee) >= 0 && dateArrivee.CompareTo(reservation.DateDepart) <= 0)                   
+                {
+                    ViewBag.Message = "Cette chambre est reservée (date Debut) !!";
+                    break;
+                    //return View(reservationsChambre);
+                }
+                if(dateDepart.CompareTo(reservation.DateArrivee) >= 0 && dateDepart.CompareTo(reservation.DateDepart) <= 0)
+                {
+                    ViewBag.Message = "Cette chambre est reservée (date Fin ) !!";
+                    break;
+                }
+                if (dateArrivee.CompareTo(reservation.DateArrivee) <= 0 && dateDepart.CompareTo(reservation.DateDepart) >= 0)
+                {
+                    ViewBag.Message = "Cette chambre est reservée";
+                    break;
+                }
+            }
+            
+            return View(reservationsChambre);
+            //return View();
+
+        }
+
+
+        // GET: Reservations
+        public async Task<IActionResult> MesReservations()
+        {
+            // Récupérer le client à partir de l'ID fourni
+            var client = await _context.Client.Include(c => c.Reservations)
+                                                 .FirstOrDefaultAsync(c => c.Id == 2);
+
+            if (client == null)
+            {
+                return NotFound();
+            }
+
+            //// Récupérer les réservations associées au client
+            var reservations = client.Reservations.ToList();
+
+            return View(reservations);
+            
+        }
+
         // GET: Reservations/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -56,7 +128,7 @@ namespace tuto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DateArrivee,DateDepart,IdClient,IdChambre")] Reservation reservation)
+        public async Task<IActionResult> Create([Bind("Id,DateArrivee,DateDepart,IdClient,IdChambre, NbrChambres")] Reservation reservation)
         {
             if (ModelState.IsValid)
             {
@@ -88,7 +160,7 @@ namespace tuto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,DateArrivee,DateDepart,IdClient,IdChambre")] Reservation reservation)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,DateArrivee,DateDepart,IdClient,IdChambre,NbrChambres")] Reservation reservation)
         {
             if (id != reservation.Id)
             {
@@ -183,21 +255,41 @@ namespace tuto.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ReserverChambre([Bind("Id,DateArrivee,DateDepart,IdClient,IdChambre")] Reservation reservation)
+        public async Task<IActionResult> ReserverChambre([Bind("Id,DateArrivee,DateDepart,IdClient,IdChambre,NbrChambres")] Reservation reservation)
         {
+            //Verifier Dates avant de creer la reservation
+            List<Reservation> reservationsChambre = _context.Reservation.Where(r => r.IdChambre == reservation.IdChambre).ToList();            
+            foreach (Reservation res in reservationsChambre)
+            {
+                if (reservation.DateArrivee.CompareTo(res.DateArrivee) >= 0 && reservation.DateArrivee.CompareTo(res.DateDepart) <= 0)
+                {
+                    ViewBag.Message = "Cette chambre est reservée (date Debut) !!";
+                    return RedirectToAction("ReserverChambre", new { idChambre = reservation.IdChambre } );
+                }
+                if (reservation.DateDepart.CompareTo(res.DateArrivee) >= 0 && reservation.DateDepart.CompareTo(res.DateDepart) <= 0)
+                {
+                    ViewBag.Message = "Cette chambre est reservée (date Fin ) !!";
+                    //break;
+                    return RedirectToAction("ReserverChambre" ,new { idChambre = reservation.IdChambre });
+                }
+                if ((reservation.DateArrivee.CompareTo(res.DateArrivee) <= 0 && reservation.DateDepart.CompareTo(res.DateDepart) >= 0))
+                {
+                    ViewBag.Message = "Cette chambre est reservée";
+                    //break;
+                    return RedirectToAction("ReserverChambre", new { idChambre = reservation.IdChambre });
+                }
+            }
+
+
             // Création de la réservation
             var reservation1 = new Reservation
             {
                 Id = reservation.Id,
-
-                //Chambre= reservation.Chambre,
                 IdChambre = reservation.IdChambre,
-                
-
                 IdClient = reservation.IdClient,
-
                 DateArrivee = reservation.DateArrivee,
-                DateDepart = reservation.DateDepart
+                DateDepart = reservation.DateDepart,
+                NbrChambres= reservation.NbrChambres   
 
                 //DateArrivee = DateTime.UtcNow,
                 //DateDepart= DateTime.Now.AddDays(3)
@@ -205,10 +297,7 @@ namespace tuto.Controllers
             };
             _context.Add(reservation1);
             await _context.SaveChangesAsync();
-            
 
-            //return Ok("Chambre réservée avec succès !");
-            //return View(reservation);
             return RedirectToAction("Index");
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace tuto.Controllers
         // GET: Factures
         public async Task<IActionResult> Index()
         {
-            var tutoContext = _context.Facture.Include(f => f.Reservation);
+            var tutoContext = _context.Facture.Include(f => f.Client);
             return View(await tutoContext.ToListAsync());
         }
 
@@ -35,7 +36,7 @@ namespace tuto.Controllers
             }
 
             var facture = await _context.Facture
-                .Include(f => f.Reservation)
+                .Include(f => f.Client)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (facture == null)
             {
@@ -48,7 +49,7 @@ namespace tuto.Controllers
         // GET: Factures/Create
         public IActionResult Create()
         {
-            ViewData["IdReservation"] = new SelectList(_context.Reservation, "Id", "Id");
+            ViewData["IdClient"] = new SelectList(_context.Client, "Id", "Id");
             return View();
         }
 
@@ -57,7 +58,7 @@ namespace tuto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Montant,DateFacture,IdReservation")] Facture facture)
+        public async Task<IActionResult> Create([Bind("Id,Montant,DateFacture,IdClient")] Facture facture)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +66,7 @@ namespace tuto.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdReservation"] = new SelectList(_context.Reservation, "Id", "Id", facture.IdReservation);
+            ViewData["IdClient"] = new SelectList(_context.Client, "Id", "Id", facture.IdClient);
             return View(facture);
         }
 
@@ -82,7 +83,7 @@ namespace tuto.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdReservation"] = new SelectList(_context.Reservation, "Id", "Id", facture.IdReservation);
+            ViewData["IdClient"] = new SelectList(_context.Client, "Id", "Id", facture.IdClient);
             return View(facture);
         }
 
@@ -91,7 +92,7 @@ namespace tuto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Montant,DateFacture,IdReservation")] Facture facture)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Montant,DateFacture,IdClient")] Facture facture)
         {
             if (id != facture.Id)
             {
@@ -118,7 +119,7 @@ namespace tuto.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdReservation"] = new SelectList(_context.Reservation, "Id", "Id", facture.IdReservation);
+            ViewData["IdClient"] = new SelectList(_context.Client, "Id", "Id", facture.IdClient);
             return View(facture);
         }
 
@@ -130,8 +131,11 @@ namespace tuto.Controllers
                 return NotFound();
             }
 
+            //var facture = await _context.Facture
+            //    .Include(f => f.Reservation)
+            //    .FirstOrDefaultAsync(m => m.Id == id);
             var facture = await _context.Facture
-                .Include(f => f.Reservation)
+                .Include(f => f.Client)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (facture == null)
             {
@@ -166,28 +170,71 @@ namespace tuto.Controllers
         }
 
 
-        // GET: Factures/Create
-        public IActionResult GenerFacture(int IdReservation)
+        // GET: Factures/GenerFacture
+        public async Task<IActionResult> GenerFacture()
         {
-            ViewData["IdReservation"] = new SelectList(_context.Reservation, "Id", "Id");
-            return View();
-        }
+            var client = await _context.Client.Include(c => c.Reservations)
+                                                .FirstOrDefaultAsync(c => c.Id == 2);
 
-        // POST: Factures/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> GenerFacture([Bind("Id,Montant,DateFacture,IdReservation")] Facture facture)
-        {
-            if (ModelState.IsValid)
+            if (client == null)
+            {
+                return NotFound();
+            }
+
+            //// Récupérer les réservations associées au client
+            var reservations = client.Reservations.ToList();
+
+            float montant = 0;
+            foreach (var reservation in reservations)
+            {
+                var chambre = _context.Chambre.FirstOrDefault(c => c.Id == reservation.IdChambre);
+                if (chambre != null)
+                {
+                    var nombre = reservation.NbrChambres;
+                    TimeSpan difference = reservation.DateDepart.Subtract(reservation.DateArrivee); // calcul de la différence entre les deux dates
+                    int numberOfDays = difference.Days;
+                    montant = montant + (nombre * chambre.Prix * numberOfDays);
+                }
+                //if (chambre != null)
+                //{
+                //    montant = montant + chambre.Prix;
+                //    //montant += reservation.nombre * chambre.Prix;
+                //}
+                //else
+                //{
+                    
+                //    montant = montant + chambre.Prix;
+                //}
+            }
+
+            var facture = new Facture()
+            {
+                Client = client,
+                IdClient = client.Id,
+                DateFacture= DateTime.Now,
+                Montant = (float)montant
+            };
+            var existingFacture = _context.Facture.FirstOrDefault(f => f.IdClient == facture.IdClient);
+
+            if (existingFacture != null)
+            {
+                existingFacture = facture;
+                _context.Update(existingFacture);
+                await _context.SaveChangesAsync();
+                ModelState.AddModelError("", "Une facture existe déjà pour ce client à cette date.");
+                return View(facture);
+            }
+            else
             {
                 _context.Add(facture);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
             }
-            ViewData["IdReservation"] = new SelectList(_context.Reservation, "Id", "Id", facture.IdReservation);
+
+            
             return View(facture);
         }
+
+        
     }
 }

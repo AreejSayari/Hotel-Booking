@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -45,6 +46,8 @@ namespace tuto.Controllers
 
             return View(chambre);
         }
+
+        
 
         // GET: Chambres/Create
         public IActionResult Create()

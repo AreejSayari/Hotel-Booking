@@ -10,5 +10,6 @@
         public string Password { get; set; }
 
         public ICollection<Reservation> Reservations { get; set; }
+        public Facture? Facture { get; set; } // propriété pour faire référence à la facture associée
     }
 }

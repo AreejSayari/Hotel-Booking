@@ -1,0 +1,62 @@
+﻿@model  IEnumerable<tuto.Models.Reservation>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Les Reservations de cette chambre</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DateArrivee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateDepart)
+            </th>            
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateArrivee)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateDepart)
+                </td>                
+            </tr>
+        }
+    </tbody>
+</table>
+
+<br />
+<br />
+
+
+<div>   
+    <form method="post">
+        <label for="name">dateArrivee :</label>
+        <input type="datetime" name="dateArrivee" id="name">
+
+        <label for="email">dateDepart :</label>
+        <input type="datetime" name="dateDepart" id="email">
+
+        <input type="submit" value="Entrez des Dates">
+    </form>
+
+   
+</div>
+<br />
+<br />
+
+@if (!string.IsNullOrEmpty(ViewBag.Message))
+{
+    <div class="alert alert-success">
+        @ViewBag.Message
+    </div>
+}
+
+

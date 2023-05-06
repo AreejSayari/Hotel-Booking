@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using tuto.Data;
 
@@ -11,9 +12,10 @@ using tuto.Data;
 namespace tuto.Migrations
 {
     [DbContext(typeof(tutoContext))]
-    partial class tutoContextModelSnapshot : ModelSnapshot
+    [Migration("20230506111747_new mig")]
+    partial class newmig
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,9 +119,6 @@ namespace tuto.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("IdClient")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NbrChambres")
                         .HasColumnType("int");
 
                     b.HasKey("Id");

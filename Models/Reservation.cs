@@ -12,6 +12,8 @@
         public int IdChambre { get; set; }
         public Chambre? Chambre { get; set; }
 
-        public Facture? Facture { get; set; } // propriété pour faire référence à la facture associée
+        public int NbrChambres { get; set; }
+
+        //public Facture? Facture { get; set; } // propriété pour faire référence à la facture associée
     }
 }
