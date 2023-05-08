@@ -6,6 +6,7 @@ namespace tuto.Models
     public class LoginViewModel
     {
         public int Id { get; set; } 
+
         [System.ComponentModel.DataAnnotations.Required]
         public string Email { get; set; }
         [System.ComponentModel.DataAnnotations.Required]

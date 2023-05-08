@@ -183,7 +183,7 @@ namespace tuto.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ClientExists(int id)
+        public bool ClientExists(int? id)
         {
           return (_context.Client?.Any(e => e.Id == id)).GetValueOrDefault();
         }
@@ -195,7 +195,7 @@ namespace tuto.Controllers
             return View();
         }
 
-        [HttpPost]
+        /*[HttpPost]
         [ValidateAntiForgeryToken]
         //async Task<IActionResult> Login([Bind("Id,Firstname,Lastname,Email,Password")] Client client)
         async Task<IActionResult> Login(string email, string password)
@@ -207,8 +207,8 @@ namespace tuto.Controllers
 
             }
             return View(client);*/
-            var user = await _context.Client.FirstOrDefaultAsync(e => e.Email == email && e.Password == password);
-            return RedirectToAction(nameof(Index));
+            //var user = await _context.Client.FirstOrDefaultAsync(e => e.Email == email && e.Password == password);
+            //return RedirectToAction(nameof(Index));
 
 
 
@@ -225,9 +225,9 @@ namespace tuto.Controllers
             //return View(user);
             return _context.Client != null ?
                        View(await _context.Client.ToListAsync()) :
-                       Problem("Entity set 'tutoContext.Client'  is null.");*/
+                       Problem("Entity set 'tutoContext.Client'  is null.");
 
-        }
+        }*/
     }
 
 

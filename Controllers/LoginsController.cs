@@ -28,11 +28,13 @@ namespace tuto.Controllers
         {
             var Email = model.Email;
             var Password = model.Password;
-            var user = _context.Client.FirstOrDefault(u => u.Email == Email && u.Password == Password);
+            var user = _context.LoginViewModel.FirstOrDefault(u => u.Email == Email && u.Password == Password);
             if (user != null)
             {
 
                 _contextAccessor.HttpContext.Session.SetInt32("UserId", user.Id);
+                _contextAccessor.HttpContext.Session.SetString("UserType", user.GetType().ToString());
+               
                 return RedirectToAction("Index", "Home");
 
             }

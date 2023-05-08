@@ -85,20 +85,26 @@ namespace tuto.Controllers
         // GET: Reservations
         public async Task<IActionResult> MesReservations()
         {
+
             var idCurrent = _contextAccessor.HttpContext.Session.GetInt32("UserId");
             // Récupérer le client à partir de l'ID fourni
+  
             var client = await _context.Client.Include(c => c.Reservations)
-                                                 .FirstOrDefaultAsync(c => c.Id == idCurrent);
+                                                .FirstOrDefaultAsync(c => c.Id == idCurrent);
+
+           
 
             if (client == null)
             {
                 return NotFound();
             }
-
+           
             //// Récupérer les réservations associées au client
             var reservations = client.Reservations.ToList();
 
             return View(reservations);
+
+ 
             
         }
 
