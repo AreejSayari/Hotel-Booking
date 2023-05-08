@@ -13,10 +13,11 @@ namespace tuto.Controllers
     public class ClientsController : Controller
     {
         private readonly tutoContext _context;
-
-        public ClientsController(tutoContext context)
+        private readonly IHttpContextAccessor _contextAccessor;
+        public ClientsController(tutoContext context, IHttpContextAccessor contextAccessor)
         {
             _context = context;
+            _contextAccessor = contextAccessor;
         }
 
         // GET: Clients
@@ -88,11 +89,24 @@ namespace tuto.Controllers
         // GET: Clients/Edit/5
         public async Task<IActionResult> Edit()
         {
-            var client = await _context.Client.FindAsync(2); //id du client (session)
+            var idCurrent = _contextAccessor.HttpContext.Session.GetInt32("UserId");
+            var client = await _context.Client.FindAsync(idCurrent); //id du client (session)
             if (client == null)
             {
                 return NotFound();
             }
+            return View(client);
+        }
+        public async Task<IActionResult> VoirProfile()
+        {
+
+            var idCurrent = _contextAccessor.HttpContext.Session.GetInt32("UserId");
+            var client = await _context.Client.FindAsync(idCurrent);
+            if (client == null)
+            {
+                return NotFound();
+            }
+
             return View(client);
         }
 

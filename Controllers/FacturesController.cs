@@ -14,10 +14,12 @@ namespace tuto.Controllers
     public class FacturesController : Controller
     {
         private readonly tutoContext _context;
+        private readonly IHttpContextAccessor _contextAccessor;
 
-        public FacturesController(tutoContext context)
+        public FacturesController(tutoContext context, IHttpContextAccessor contextAccessor)
         {
             _context = context;
+            _contextAccessor = contextAccessor;
         }
 
         // GET: Factures
@@ -173,8 +175,9 @@ namespace tuto.Controllers
         // GET: Factures/GenerFacture
         public async Task<IActionResult> GenerFacture()
         {
+            var idCurrent = _contextAccessor.HttpContext.Session.GetInt32("UserId");
             var client = await _context.Client.Include(c => c.Reservations)
-                                                .FirstOrDefaultAsync(c => c.Id == 2);
+                                                .FirstOrDefaultAsync(c => c.Id == idCurrent);
 
             if (client == null)
             {

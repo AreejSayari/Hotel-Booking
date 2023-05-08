@@ -13,10 +13,12 @@ namespace tuto.Controllers
     public class ReservationsController : Controller
     {
         private readonly tutoContext _context;
+        private readonly IHttpContextAccessor _contextAccessor;
 
-        public ReservationsController(tutoContext context)
+        public ReservationsController(tutoContext context, IHttpContextAccessor contextAccessor)
         {
             _context = context;
+            _contextAccessor = contextAccessor;
         }
 
         // GET: Reservations
@@ -83,9 +85,10 @@ namespace tuto.Controllers
         // GET: Reservations
         public async Task<IActionResult> MesReservations()
         {
+            var idCurrent = _contextAccessor.HttpContext.Session.GetInt32("UserId");
             // Récupérer le client à partir de l'ID fourni
             var client = await _context.Client.Include(c => c.Reservations)
-                                                 .FirstOrDefaultAsync(c => c.Id == 2);
+                                                 .FirstOrDefaultAsync(c => c.Id == idCurrent);
 
             if (client == null)
             {
@@ -280,13 +283,14 @@ namespace tuto.Controllers
                 }
             }
 
-
+            var idCurrent = _contextAccessor.HttpContext.Session.GetInt32("UserId");
             // Création de la réservation
             var reservation1 = new Reservation
             {
                 Id = reservation.Id,
                 IdChambre = reservation.IdChambre,
-                IdClient = reservation.IdClient,
+                //IdClient = reservation.IdClient,
+                IdClient = (int) idCurrent,
                 DateArrivee = reservation.DateArrivee,
                 DateDepart = reservation.DateDepart,
                 NbrChambres= reservation.NbrChambres   

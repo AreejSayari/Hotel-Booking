@@ -21,6 +21,7 @@
     <Compile Remove="Controllers\ReservationChambre.cs" />
     <Compile Remove="Models\AddUserViewModel.cs" />
     <Compile Remove="Models\UpdateUserViewModel.cs" />
+    <Compile Remove="Startup.cs" />
   </ItemGroup>
 
   <ItemGroup>

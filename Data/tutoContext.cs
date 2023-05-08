@@ -20,7 +20,7 @@ namespace tuto.Data
 
         public DbSet<tuto.Models.Reservation>? Reservation { get; set; }
         public DbSet<tuto.Models.Facture> Facture { get; set; }
-
+        public DbSet<LoginViewModel> loginViewModels { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //modelBuilder.Entity<Reservation>()
@@ -46,5 +46,7 @@ namespace tuto.Data
         }
 
         public DbSet<tuto.Models.Admin>? Admin { get; set; }
+
+        public DbSet<tuto.Models.LoginViewModel>? LoginViewModel { get; set; }
     }
 }
