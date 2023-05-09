@@ -77,7 +77,7 @@ namespace tuto.Controllers
             }
             
             return View(reservationsChambre);
-            //return View();
+           
 
         }
 
@@ -137,7 +137,7 @@ namespace tuto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DateArrivee,DateDepart,IdClient,IdChambre, NbrChambres")] Reservation reservation)
+        public async Task<IActionResult> Create([Bind("Id,DateArrivee,DateDepart,IdClient,IdChambre,Client,Chambre")] Reservation reservation)
         {
             if (ModelState.IsValid)
             {
@@ -156,7 +156,7 @@ namespace tuto.Controllers
                 return NotFound();
             }
 
-            var reservation = await _context.Reservation.FindAsync(id);
+            var reservation = await _context.Reservation.FindAsync(id);      
             if (reservation == null)
             {
                 return NotFound();
@@ -169,17 +169,17 @@ namespace tuto.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,DateArrivee,DateDepart,IdClient,IdChambre,NbrChambres")] Reservation reservation)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,DateArrivee,DateDepart,IdChambre,IdClient")] Reservation reservation)
         {
             if (id != reservation.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (reservation != null)
             {
                 try
-                {
+                {                    
                     _context.Update(reservation);
                     await _context.SaveChangesAsync();
                 }
@@ -233,7 +233,7 @@ namespace tuto.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(MesReservations));
         }
 
         private bool ReservationExists(int id)
@@ -261,10 +261,11 @@ namespace tuto.Controllers
                 IdChambre=chambre.Id
             };
             return View(reservation);
+            
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ReserverChambre([Bind("Id,DateArrivee,DateDepart,IdClient,IdChambre,NbrChambres")] Reservation reservation)
+        public async Task<IActionResult> ReserverChambre([Bind("Id,DateArrivee,DateDepart,IdClient,IdChambre")] Reservation reservation)
         {
             //Verifier Dates avant de creer la reservation
             List<Reservation> reservationsChambre = _context.Reservation.Where(r => r.IdChambre == reservation.IdChambre).ToList();            
@@ -289,26 +290,27 @@ namespace tuto.Controllers
                 }
             }
 
+            var currentChambre = await _context.Chambre.FindAsync(reservation.IdChambre);
             var idCurrent = _contextAccessor.HttpContext.Session.GetInt32("UserId");
+
             // Création de la réservation
             var reservation1 = new Reservation
             {
                 Id = reservation.Id,
-                IdChambre = reservation.IdChambre,
-                //IdClient = reservation.IdClient,
+                IdChambre = reservation.IdChambre, 
+                Chambre =  currentChambre,
                 IdClient = (int) idCurrent,
+                Client = await _context.Client.FindAsync(idCurrent),
                 DateArrivee = reservation.DateArrivee,
                 DateDepart = reservation.DateDepart,
-                NbrChambres= reservation.NbrChambres   
-
-                //DateArrivee = DateTime.UtcNow,
-                //DateDepart= DateTime.Now.AddDays(3)
+                
 
             };
             _context.Add(reservation1);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Index");
+            return RedirectToAction(nameof(MesReservations));
+            //return RedirectToAction("Index");
         }
     }
 }

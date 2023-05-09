@@ -13,14 +13,13 @@ namespace tuto.Data
             : base(options)
         {
         }
-
-        public DbSet<tuto.Models.Chambre> Chambre { get; set; } = default!;
-
+        public DbSet<LoginViewModel> loginViewModels { get; set; }
         public DbSet<tuto.Models.Client>? Client { get; set; }
-
+        public DbSet<tuto.Models.Chambre> Chambre { get; set; }        
         public DbSet<tuto.Models.Reservation>? Reservation { get; set; }
         public DbSet<tuto.Models.Facture> Facture { get; set; }
-        public DbSet<LoginViewModel> loginViewModels { get; set; }
+        public DbSet<tuto.Models.Admin>? Admin { get; set; }
+        public DbSet<tuto.Models.LoginViewModel>? LoginViewModel { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //modelBuilder.Entity<Reservation>()
@@ -43,10 +42,15 @@ namespace tuto.Data
                 .HasOne(r => r.Client)
                 .WithMany(c => c.Reservations)
                 .HasForeignKey(r => r.IdClient);
+
+            //modelBuilder.Entity<Chambre>()
+            //    .HasOne(r => r.TypeChambre)
+            //    .WithMany(c => c.Chambres)
+            //    .HasForeignKey(r => r.IdTypeChambre);
         }
 
-        public DbSet<tuto.Models.Admin>? Admin { get; set; }
+        
 
-        public DbSet<tuto.Models.LoginViewModel>? LoginViewModel { get; set; }
+        
     }
 }

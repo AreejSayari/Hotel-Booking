@@ -9,39 +9,43 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/tuto.styles.css" asp-append-version="true" />
+    
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">tuto</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Hotel E-booking</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
+                        @*<li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                        </li>*@
                         @if (_contextAccessor.HttpContext.Session.GetInt32("UserId") != null)
                         {
                             @if (@_contextAccessor.HttpContext.Session.GetString("UserType").Equals("tuto.Models.Client"))
                             {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Chambres" asp-action="MesChambres">Chambres</a>
+                                </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="MesReservations">Mes Reservations</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Factures" asp-action="GenerFacture">Factures</a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item" >
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Clients" asp-action="Edit">Modifier Compte</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Clients" asp-action="VoirProfile">Voir Compte</a>
+                                <li class="nav-item" >
+                                    <a  class="nav-link text-dark" asp-area="" asp-controller="Clients" asp-action="VoirProfile">Voir Compte</a>
                                 </li>
 
                             }
@@ -52,7 +56,7 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Chambres" asp-action="Index">Chambres</a>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item ">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Clients" asp-action="Index">Clients</a>
                                 </li>
                                 <li class="nav-item">
@@ -78,7 +82,8 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - tuto - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            SAYARI Erij  &  KHOMSI Asma 
+          @* Hotel e-Booking  <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>*@
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

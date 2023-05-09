@@ -1,0 +1,50 @@
+﻿@model IEnumerable<tuto.Models.Chambre>
+
+@{
+    ViewData["Title"] = "Les Chambres";
+}
+
+<h1>Chambres</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            
+            <th>
+                @Html.DisplayNameFor(model => model.NumeroChambre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Prix)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumeroChambre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Prix)
+                </td>
+                <td>
+                    @*<a asp-action="Reservations/ReserverChambre" asp-route-id="@item.Id">Reserver</a> *@ 
+            <a asp-controller="Reservations" asp-action="ReserverChambre" asp-route-idChambre="@item.Id">Réserver</a>|
+                        <a asp-controller="Reservations" asp-action="VerifierDispo" asp-route-idChambre="@item.Id">Verifier les Dispo</a>|
+                   
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

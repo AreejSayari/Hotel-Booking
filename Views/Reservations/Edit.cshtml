@@ -4,9 +4,7 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>Reservation</h4>
+<h1>Edit- Reservation</h1>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -24,30 +22,24 @@
                 <span asp-validation-for="DateDepart" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IdClient" class="control-label"></label>
-                <input asp-for="IdClient" class="form-control" />
+                
+                <input type="hidden" asp-for="IdClient" class="form-control" />
                 <span asp-validation-for="IdClient" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="IdChambre" class="control-label"></label>
-                <input asp-for="IdChambre" class="form-control" />
+                
+                <input type="hidden" asp-for="IdChambre" class="form-control" />
                 <span asp-validation-for="IdChambre" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="NbrChambres" class="control-label"></label>
-                <input asp-for="NbrChambres" class="form-control" />
-                <span asp-validation-for="NbrChambres" class="text-danger"></span>
-            </div>
+            <br />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<br />
+<a asp-controller="Reservations" asp-action="MesReservations">Mes Reservations</a>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

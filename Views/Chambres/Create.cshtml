@@ -30,6 +30,14 @@
                 @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
             </div>
         </div>
+        @*<div class="form-group col-md-6">
+            @Html.LabelFor(model => model.TypeChambre, new { @class = "control-label" })
+            <div class="input-group">
+                @Html.DropDownListFor(model => model.TypeChambre, new SelectList(ViewBag.Types, "Id", "Name"), "-- Select Room Type --", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.TypeChambre, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+
 
         <div class="form-group col-md-6">
             @Html.LabelFor(model => model.Prix, new { @class = "control-label" })

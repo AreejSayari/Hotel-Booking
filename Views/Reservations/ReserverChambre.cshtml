@@ -5,9 +5,8 @@
     ViewData["Title"] = "Reserver";
 }
 
-<h1>Create</h1>
+<h1>Reserver Chambre</h1>
 
-<h4>Chambre</h4>
 <hr />
 @using (Html.BeginForm())
 {
@@ -15,22 +14,8 @@
 
     <div class="form-row">
         @Html.ValidationSummary(true)
-        @*<div class="form-group col-md-6">
-            @Html.LabelFor(model => model.IdClient, new { @class = "control-label" })
-            <div class="input-group">
-                @Html.EditorFor(model => model.IdClient, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.IdClient, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
-
-        <div class="form-group col-md-6">
-            @Html.LabelFor(model => model.NbrChambres, new { @class = "control-label" })
-            <div class="input-group">
-                @Html.EditorFor(model => model.NbrChambres, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NbrChambres, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
+        
+        
         <div class="form-group col-md-6">
             @Html.LabelFor(model => model.DateArrivee, new { @class = "control-label" })
             <div class="input-group">
@@ -67,7 +52,7 @@
 }
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Chambres" asp-action="MesChambres">Revenir aux Chambres</a>
 </div>
 
 @section Scripts {

@@ -1,14 +1,14 @@
 ﻿@model tuto.Models.Client
 
 @{
-    ViewData["Title"] = "VoirProfile";
+    ViewData["Title"] = "Voir Profile";
 }
 
-<h1>VoirProfile</h1>
-
+<h1>Voir Profile - Client</h1>
+<hr />
 <div>
-    <h4>Client</h4>
-    <hr />
+    
+   
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Firstname)
@@ -37,6 +37,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+   @* <a asp-action="Index">Back to List</a>*@
 </div>

@@ -5,28 +5,38 @@
 }
 
 <h1>Mes Reservations</h1>
-
-@*<p>
-    <a asp-action="Create">Create New</a>
-</p>*@
+ 
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IdClient)
+            </th>
+            <th>
+                Name
+                @*@Html.DisplayNameFor(model => model.Client.Firstname)*@
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.DateArrivee)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.DateDepart)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdClient)
-            </th>
+            
             <th>
                 @Html.DisplayNameFor(model => model.IdChambre)
             </th>
+            @*
             <th>
-                @Html.DisplayNameFor(model => model.NbrChambres)
+                @Html.DisplayNameFor(model => model.Chambre.NumeroChambre)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Chambre.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Chambre.Prix)
+            </th>*@
+            
             <th></th>
             
         </tr>
@@ -36,20 +46,33 @@
         {
             <tr>
                 <td>
+                    @Html.DisplayFor(modelItem => item.IdClient)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Client.Firstname)  @Html.DisplayFor(modelItem => item.Client.Lastname)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.DateArrivee)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.DateDepart)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.IdClient)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.IdChambre)
                 </td>
+                @*
                 <td>
-                    @Html.DisplayFor(modelItem => item.NbrChambres)
+                    @Html.DisplayFor(modelItem => item.Chambre.NumeroChambre)
                 </td>
+                
+                <td>
+                     @Html.DisplayFor(modelItem => item.Chambre.Type)
+                </td>
+                <td>
+                      @Html.DisplayFor(modelItem => item.Chambre.Prix)
+                </td>
+                *@
+                
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |

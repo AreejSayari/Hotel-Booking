@@ -193,10 +193,10 @@ namespace tuto.Controllers
                 var chambre = _context.Chambre.FirstOrDefault(c => c.Id == reservation.IdChambre);
                 if (chambre != null)
                 {
-                    var nombre = reservation.NbrChambres;
+                    
                     TimeSpan difference = reservation.DateDepart.Subtract(reservation.DateArrivee); // calcul de la différence entre les deux dates
                     int numberOfDays = difference.Days;
-                    montant = montant + (nombre * chambre.Prix * numberOfDays);
+                    montant = montant + (chambre.Prix * numberOfDays);
                 }
                 //if (chambre != null)
                 //{

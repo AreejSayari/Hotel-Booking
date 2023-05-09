@@ -4,12 +4,57 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
+<h1>Details Facture</h1>
+<hr />
 <div>
-    <h4>Facture</h4>
-    <hr />
+
+
     <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Client.Firstname)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Client.Firstname)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Client.Lastname)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Client.Lastname)
+        </dd>
+        
+
+        <table class="table">
+            <thead>
+        <tr>
+            <th>Numero Chambre</th>
+            <th>
+                Type
+            </th>
+            <th>
+                Prix
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+            <tbody>
+                @foreach (var item in Model.Client.Reservations)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Chambre.NumeroChambre)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Chambre.Type)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Chambre.Prix)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Montant)
         </dt>
@@ -22,16 +67,9 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DateFacture)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Client)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Client.Id)
-        </dd>
     </dl>
 </div>
-<div>
+@*<div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
-</div>
-
+</div>*@

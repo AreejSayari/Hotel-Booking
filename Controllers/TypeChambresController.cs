@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,109 +10,101 @@ using tuto.Models;
 
 namespace tuto.Controllers
 {
-    public class ChambresController : Controller
+    public class TypeChambresController : Controller
     {
         private readonly tutoContext _context;
 
-        public ChambresController(tutoContext context)
+        public TypeChambresController(tutoContext context)
         {
             _context = context;
         }
 
-        // GET: Chambres
+        // GET: TypeChambres
         public async Task<IActionResult> Index()
         {
-              return _context.Chambre != null ? 
-                          View(await _context.Chambre.ToListAsync()) :
-                          Problem("Entity set 'tutoContext.Chambre'  is null.");
-        }
-        public async Task<IActionResult> MesChambres()
-        {
-            return _context.Chambre != null ?
-                        View(await _context.Chambre.ToListAsync()) :
-                        Problem("Entity set 'tutoContext.Chambre'  is null.");
+              return _context.TypeChambre != null ? 
+                          View(await _context.TypeChambre.ToListAsync()) :
+                          Problem("Entity set 'tutoContext.TypeChambre'  is null.");
         }
 
-        // GET: Chambres/Details/5
+        // GET: TypeChambres/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Chambre == null)
+            if (id == null || _context.TypeChambre == null)
             {
                 return NotFound();
             }
 
-            var chambre = await _context.Chambre
+            var typeChambre = await _context.TypeChambre
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (chambre == null)
+            if (typeChambre == null)
             {
                 return NotFound();
             }
 
-            return View(chambre);
+            return View(typeChambre);
         }
 
-        
-
-        // GET: Chambres/Create
+        // GET: TypeChambres/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Chambres/Create
+        // POST: TypeChambres/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NumeroChambre,Type,Prix")] Chambre chambre)
+        public async Task<IActionResult> Create([Bind("Id,Name")] TypeChambre typeChambre)
         {
-            if (chambre != null)
+            if (ModelState.IsValid)
             {
-                _context.Chambre.Add(chambre);               
+                _context.Add(typeChambre);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }    
-            return View(chambre);
+            }
+            return View(typeChambre);
         }
 
-        // GET: Chambres/Edit/5
+        // GET: TypeChambres/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Chambre == null)
+            if (id == null || _context.TypeChambre == null)
             {
                 return NotFound();
             }
 
-            var chambre = await _context.Chambre.FindAsync(id);
-            if (chambre == null)
+            var typeChambre = await _context.TypeChambre.FindAsync(id);
+            if (typeChambre == null)
             {
                 return NotFound();
             }
-            return View(chambre);
+            return View(typeChambre);
         }
 
-        // POST: Chambres/Edit/5
+        // POST: TypeChambres/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]      
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NumeroChambre,Type,Prix")] Chambre chambre)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] TypeChambre typeChambre)
         {
-            if (id != chambre.Id)
+            if (id != typeChambre.Id)
             {
                 return NotFound();
             }
 
-            if (chambre != null)
+            if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(chambre);
+                    _context.Update(typeChambre);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ChambreExists(chambre.Id))
+                    if (!TypeChambreExists(typeChambre.Id))
                     {
                         return NotFound();
                     }
@@ -125,50 +115,49 @@ namespace tuto.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(chambre);
+            return View(typeChambre);
         }
 
-        // GET: Chambres/Delete/5
+        // GET: TypeChambres/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Chambre == null)
+            if (id == null || _context.TypeChambre == null)
             {
                 return NotFound();
             }
 
-            var chambre = await _context.Chambre
+            var typeChambre = await _context.TypeChambre
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (chambre == null)
+            if (typeChambre == null)
             {
                 return NotFound();
             }
 
-            return View(chambre);
+            return View(typeChambre);
         }
 
-        // POST: Chambres/Delete/5
+        // POST: TypeChambres/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Chambre == null)
+            if (_context.TypeChambre == null)
             {
-                return Problem("Entity set 'tutoContext.Chambre'  is null.");
+                return Problem("Entity set 'tutoContext.TypeChambre'  is null.");
             }
-            var chambre = await _context.Chambre.FindAsync(id);
-            if (chambre != null)
+            var typeChambre = await _context.TypeChambre.FindAsync(id);
+            if (typeChambre != null)
             {
-                _context.Chambre.Remove(chambre);
+                _context.TypeChambre.Remove(typeChambre);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ChambreExists(int id)
+        private bool TypeChambreExists(int id)
         {
-          return (_context.Chambre?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.TypeChambre?.Any(e => e.Id == id)).GetValueOrDefault();
         }
-
     }
 }

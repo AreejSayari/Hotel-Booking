@@ -9,19 +9,33 @@
   <ItemGroup>
     <Compile Remove="Views\Login\**" />
     <Compile Remove="Views\NewFolder\**" />
+    <Compile Remove="Views\TypeChambres\**" />
     <Content Remove="Views\Login\**" />
     <Content Remove="Views\NewFolder\**" />
+    <Content Remove="Views\TypeChambres\**" />
     <EmbeddedResource Remove="Views\Login\**" />
     <EmbeddedResource Remove="Views\NewFolder\**" />
+    <EmbeddedResource Remove="Views\TypeChambres\**" />
     <None Remove="Views\Login\**" />
     <None Remove="Views\NewFolder\**" />
+    <None Remove="Views\TypeChambres\**" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Remove="Controllers\ReservationChambre.cs" />
+    <Compile Remove="Controllers\TypeChambresController.cs" />
     <Compile Remove="Models\AddUserViewModel.cs" />
+    <Compile Remove="Models\TypeChambre.cs" />
     <Compile Remove="Models\UpdateUserViewModel.cs" />
     <Compile Remove="Startup.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Shared\_Layout - Copier.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Views\Shared\_Layout - Copier.cshtml.css" />
   </ItemGroup>
 
   <ItemGroup>
