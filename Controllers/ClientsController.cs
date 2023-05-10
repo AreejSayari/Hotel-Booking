@@ -64,10 +64,11 @@ namespace tuto.Controllers
             {
                 _context.Client.Add(client);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                //return RedirectToAction("Index");
+                return RedirectToAction("Login", "Logins");
 
-            }            
-            return View(client);
+            }
+            return RedirectToAction("Login", "Logins");
         }
 
         // GET: Clients/Edit/5
